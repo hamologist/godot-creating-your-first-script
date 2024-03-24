@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://dm7aah5b76hhc"]
+
+[ext_resource type="Script" path="res://game_state_manager.gd" id="1_6bqcu"]
+[ext_resource type="PackedScene" uid="uid://cnt5bjsffovvo" path="res://sprite_2d.tscn" id="1_h2kit"]
+[ext_resource type="Script" path="res://motion_button.gd" id="3_b6t3j"]
+[ext_resource type="Script" path="res://input_label.gd" id="4_a7oxv"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="GameStateManager" type="Node" parent="."]
+script = ExtResource("1_6bqcu")
+
+[node name="Sprite2D" parent="GameStateManager" instance=ExtResource("1_h2kit")]
+position = Vector2(602.365, 279.933)
+
+[node name="Timer" type="Timer" parent="GameStateManager/Sprite2D"]
+wait_time = 0.7
+autostart = true
+
+[node name="MotionButton" type="Button" parent="GameStateManager"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 200.0
+offset_bottom = 100.0
+text = "Toggle motion"
+script = ExtResource("3_b6t3j")
+
+[node name="InputButton" type="Button" parent="GameStateManager"]
+offset_left = 250.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 100.0
+text = "Toggle Input"
+
+[node name="InputLabel" type="Label" parent="GameStateManager/InputButton"]
+layout_mode = 0
+offset_top = 50.0
+offset_right = 40.0
+offset_bottom = 73.0
+script = ExtResource("4_a7oxv")
+
+[connection signal="in_motion_mutated" from="GameStateManager" to="GameStateManager/Sprite2D" method="_on_game_state_manager_in_motion_mutated"]
+[connection signal="input_mode_mutated" from="GameStateManager" to="GameStateManager/Sprite2D" method="_on_game_state_manager_input_mode_mutated"]
+[connection signal="input_mode_mutated" from="GameStateManager" to="GameStateManager/MotionButton" method="_on_game_state_manager_input_mode_mutated"]
+[connection signal="input_mode_mutated" from="GameStateManager" to="GameStateManager/InputButton/InputLabel" method="_on_game_state_manager_input_mode_mutated"]
+[connection signal="pressed" from="GameStateManager/MotionButton" to="GameStateManager" method="_on_motion_button_pressed"]
+[connection signal="pressed" from="GameStateManager/InputButton" to="GameStateManager" method="_on_input_button_pressed"]
